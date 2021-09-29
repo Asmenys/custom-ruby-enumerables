@@ -81,9 +81,52 @@ module Enumerable
     result
   end
 
+  def my_none?(*argument)
+    result = true
+    ary = self
+    if block_given?
+      ary.my_each do |value|
+        if yield(value) == true
+          result = false
+          break
+        end
+      end
+    else
+      if argument[0].nil?
+        result = ary.my_any?{|member| member == nil}
+      else
+        case argument[0].class.name
+          in 'Regexp'
+            result = ary.my_none? {|member| argument[0].match?(member)}
+        else result = ary.my_none? {|member| member.is_a?(argument[0])}
+        end
+      end
+    end
+    result
+  end
+
+  def my_count(*argument)
+    result = 0
+    ary = self
+    if block_given?
+      ary.my_each do |value|
+        if yield(value) == true
+          result+=1
+        end
+      end
+    else
+      if argument[0].nil?
+        result = ary.length
+      else
+        result = ary.my_count{|value| value == argument[0] }
+      end
+    end
+    result
+  end
+
+
+
 end
 
-%w[ant bear cat].my_all?(/t/)
 binding.pry
-arr=[1,2,3]
 something = 'something'
