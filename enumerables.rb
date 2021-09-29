@@ -57,7 +57,29 @@ module Enumerable
     result
   end
   
-
+  def my_any?(*argument)
+    result = false
+    ary = self
+    if block_given?
+      ary.my_each do |value|
+        if yield(value) == true
+          result = true
+          break
+        end
+      end
+    else
+      if argument[0].nil?
+        result = ary.my_any?{|member| member == nil}
+      else
+        case argument[0].class.name
+          in 'Regexp'
+            result = ary.my_any? {|member| argument[0].match?(member)}
+        else result = ary.my_any? {|member| member.is_a?(argument[0])}
+        end
+      end
+    end
+    result
+  end
 
 end
 
