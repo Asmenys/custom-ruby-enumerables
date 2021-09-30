@@ -124,9 +124,36 @@ module Enumerable
     result
   end
 
+  def my_map
+    result = []
+    ary = self
+    if block_given?
+      ary.my_each do |memeber|
+        result << yield(member)
+      end
+    end
+    result
+  end
 
+  def my_inject(*argument)
+    result = 0
+    ary = self.to_a
+    if block_given?
+      if argument[0].nil?
+        temp_result = ary.shift
+      else
+        temp_result = argument[0]
+      end
+      ary.each do |member|
+       temp_result = yield(temp_result, member)
+      end
+      result = temp_result
+    end
+    result
+  end
 
 end
 
-binding.pry
+binding.pry 
+
 something = 'something'
