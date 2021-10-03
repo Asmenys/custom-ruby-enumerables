@@ -124,11 +124,11 @@ module Enumerable
     result
   end
 
-  def my_map
+  def my_map(&block)
     result = []
     ary = self
     if block_given?
-      ary.my_each do |memeber|
+      ary.my_each do |member|
         result << yield(member)
       end
     end
@@ -151,9 +151,4 @@ module Enumerable
     end
     result
   end
-
 end
-
-binding.pry 
-
-something = 'something'
